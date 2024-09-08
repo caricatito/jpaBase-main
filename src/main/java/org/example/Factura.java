@@ -1,19 +1,14 @@
 package org.example;
-
 import lombok.*;
-import lombok.experimental.FieldNameConstants;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
-@Builder
-@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "factura")
 
 public class Factura implements Serializable {
@@ -25,6 +20,7 @@ public class Factura implements Serializable {
     private Long id;
 
     @Column(name = "fecha")
+
     private String fecha;
 
     @Column(name = "numero")
@@ -38,5 +34,5 @@ public class Factura implements Serializable {
     private Cliente cliente;
 
     @OneToMany(mappedBy = "factura",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DetalleFactura> detalle = new ArrayList<DetalleFactura>();
+    private Set<DetalleFactura> detalleFactura = new HashSet<>();
 }

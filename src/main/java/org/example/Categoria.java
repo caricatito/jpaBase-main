@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class Categoria implements Serializable {
     private String denominacion;
 
     @ManyToMany(mappedBy = "categoria")
-    private List<Articulo> articulos = new ArrayList<Articulo>();
+    private Set<Articulo> articulo = new HashSet<Articulo>();
 
     public Categoria(String denominacion){
         super();

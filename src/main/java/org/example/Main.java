@@ -1,89 +1,85 @@
 package org.example;
-import lombok.Builder;
-import lombok.Data;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-@Data
-@Builder
 
 public class Main {
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("example-unit");
-
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        System.out.println("A crear una base de Datos");
-        try {
+
+        try{
             entityManager.getTransaction().begin();
 
-            Factura factura1 = Factura.builder()
-                    .numero(12)
-                    .fecha("20/08/2024")
-                    .total(220)
-                    .build();
+            Factura fac1 = new Factura();
+            DetalleFactura dfac1 = new DetalleFactura();
+            DetalleFactura dfac2 = new DetalleFactura();
 
-            Domicilio dom1 = new Domicilio("San Martin", 1222);
-            Cliente cliente1 = new Cliente("Facundo", "Caricato", 45023207);
+            Categoria cat1 = new Categoria("Lacteos");
+            Categoria cat2 = new Categoria("Limpieza");
+            Categoria cat3 = new Categoria("Perecedero");
 
-            cliente1.setDomicilio(dom1);
-            dom1.setCliente(cliente1);
-            factura1.setCliente(cliente1);
+            Articulo art1 = new Articulo(5f, "Leche", 200);
+            Articulo art2 = new Articulo(10f, "Jabon", 350);
+            Articulo art3 = new Articulo(3f, "Escoba", 500);
+            Articulo art4 = new Articulo(8f, "Yogurt", 150);
 
-            Categoria percederos = new Categoria("Percederos");
-            Categoria lacteos = new Categoria("Lacteos");
-            Categoria limpieza = new Categoria("Limpieza");
+            Domicilio dom1 = new Domicilio("Benavente", 6229);
+            Domicilio dom2 = new Domicilio("Rivadavia", 548);
 
-            Articulo articulo1 = new Articulo("Yogurt", 200F, 100);
-            Articulo articulo2 = new Articulo("Arroz", 900F, 150);
-            Articulo articulo3 = new Articulo("Detergente", 1000F, 300);
+            Cliente cli1 = new Cliente("Facundo", "Caricato", 45023207);
+            Cliente cli2 = new Cliente("Alejo", "Carobolante", 45360753);
 
-            articulo1.getCategoria().add(lacteos);
-            articulo2.getCategoria().add(percederos);
-            articulo3.getCategoria().add(limpieza);
-            lacteos.getArticulos().add(articulo1);
-            percederos.getArticulos().add(articulo2);
-            limpieza.getArticulos().add(articulo3);
+            dom1.setCliente(cli1);
+            dom2.setCliente(cli2);
 
-            DetalleFactura det1 = DetalleFactura.builder()
-                    .cantidad(2)
-                    .subtotal(40)
-                    .build();
-            det1.setArticulo(articulo1);
+            cli1.setDomicilio(dom1);
+            cli2.setDomicilio(dom2);
 
-            articulo1.getDetalle().add(det1);
-            factura1.getDetalle().add(det1);
-            det1.setFactura(factura1);
+            art1.getCategoria().add(cat1);
+            art1.getCategoria().add(cat3);
+            art2.getCategoria().add(cat2);
+            art3.getCategoria().add(cat2);
+            art4.getCategoria().add(cat1);
+            art4.getCategoria().add(cat3);
 
-            DetalleFactura det2 = DetalleFactura.builder()
-                    .cantidad(5)
-                    .subtotal(80)
-                    .build();
+            cat1.getArticulo().add(art1);
+            cat1.getArticulo().add(art4);
+            cat2.getArticulo().add(art2);
+            cat2.getArticulo().add(art3);
+            cat3.getArticulo().add(art1);
+            cat3.getArticulo().add(art4);
 
-            det2.setArticulo(articulo2);
+            art2.getDetallefactura().add(dfac1);
 
+            fac1.setCliente(cli1);
+            fac1.setFecha("28/09/2024");
+            fac1.getDetalleFactura().add(dfac1);
+            fac1.getDetalleFactura().add(dfac2);
 
-            articulo2.getDetalle().add(det2);
-            factura1.getDetalle().add(det2);
-            det2.setFactura(factura1);
+            dfac1.setArticulo(art2);
+            dfac1.setCantidad(20);
+            dfac1.setSubtotal(100);
+            dfac1.setFactura(fac1);
 
-            DetalleFactura det3 = DetalleFactura.builder()
-                    .cantidad(3)
-                    .subtotal(100)
-                    .build();
-            det3.setArticulo(articulo3);
+            dfac2.setArticulo(art1);
+            dfac2.setCantidad(50);
+            dfac2.setSubtotal(200);
+            dfac2.setFactura(fac1);
 
-            articulo3.getDetalle().add(det3);
-            factura1.getDetalle().add(det3);
-            det3.setFactura(factura1);
+            fac1.setTotal(300);
 
-
-            entityManager.persist(factura1);
+            entityManager.persist(fac1);
 
             entityManager.flush();
             entityManager.getTransaction().commit();
-        } catch (RuntimeException e) {
+
+        }catch (Exception e){
             entityManager.getTransaction().rollback();
+            System.out.println(e.getMessage());
+            System.out.println("No se pudo grabar las clases");
         }
+
         entityManager.close();
         entityManagerFactory.close();
     }

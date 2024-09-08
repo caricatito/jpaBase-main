@@ -37,8 +37,6 @@ public class DetalleFactura implements Serializable {
     public DetalleFactura(int cantidad, int subtotal) {
         this.cantidad = cantidad;
         this.subtotal = subtotal;
-        this.articulo = articulo;
-        this.factura = factura;
     }
 
 }

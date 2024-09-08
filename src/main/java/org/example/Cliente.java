@@ -1,10 +1,8 @@
 package org.example;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.*;
 
@@ -37,12 +35,11 @@ public class Cliente implements Serializable {
     private Domicilio domicilio;
 
     @OneToMany(mappedBy = "cliente")
-    private List<Factura> factura= new ArrayList<Factura>();
+    private Set<Factura> factura= new HashSet<>();
 
     public Cliente(String nombre, String apellido, int dni) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-        this.domicilio = domicilio;
     }
 }
