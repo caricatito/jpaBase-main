@@ -1,6 +1,7 @@
 package org.example;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name="Domicilio")
+@Audited
 public class Domicilio {
 
     private static final long serialVersionUID = 1L;

@@ -74,10 +74,32 @@ public class Main {
             entityManager.flush();
             entityManager.getTransaction().commit();
 
+            //Segunda versión de factura
+
+            entityManager.getTransaction().begin();
+
+            fac1.setCliente(cli2);
+            fac1.setFecha("12/09/2003");
+            fac1.getDetalleFactura().add(dfac1);
+            fac1.getDetalleFactura().add(dfac2);
+            dfac1.setFactura(fac1);
+            dfac2.setFactura(fac1);
+
+            entityManager.getTransaction().commit();
+
+            //Tercera versión de factura
+
+            entityManager.getTransaction().begin();
+
+            entityManager.remove(fac1);
+
+            entityManager.getTransaction().commit();
+
         }catch (Exception e){
             entityManager.getTransaction().rollback();
             System.out.println(e.getMessage());
             System.out.println("No se pudo grabar las clases");
+
         }
 
         entityManager.close();

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import lombok.*;
 @Entity
 @Builder
 @Table(name = "cliente")
+@Audited
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
